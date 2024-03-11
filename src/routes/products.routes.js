@@ -10,7 +10,7 @@ const requireSignIn = require("../middlewares/auth.middleware");
 //multer configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "../uploads/");
+    cb(null, "../uploads/products");
   },
   filename: function (req, file, cb) {
     const appTitle = req.body.title || "DefaultAppTitle";

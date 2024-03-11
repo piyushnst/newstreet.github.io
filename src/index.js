@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 const requireSignIn = require("./middlewares/auth.middleware");
 const adminRoutes = require("./routes/admin.routes");
 const productRoutes = require("./routes/products.routes");
+require("dotenv").config();
 
 //database connection
 connectDB();
@@ -37,7 +38,6 @@ app.get("/protected-route", requireSignIn, (req, res) => {
 });
 
 const PORT = 8000;
-
 app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);
 });
