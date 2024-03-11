@@ -4,10 +4,13 @@ const connectDB = require("./config/db");
 const requireSignIn = require("./middlewares/auth.middleware");
 const adminRoutes = require("./routes/admin.routes");
 const productRoutes = require("./routes/products.routes");
+const newsRoutes = require("./routes/news.routes");
 require("dotenv").config();
 
 //database connection
 connectDB();
+
+global.__basedir = __dirname + "/..";
 
 //object instance
 const app = express();
@@ -21,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1", adminRoutes);
 app.use("/api/v1/products", productRoutes);
+app.use("/api/v1/news", newsRoutes);
 
 //check protected route  test
 app.get("/protected-route", requireSignIn, (req, res) => {
