@@ -27,6 +27,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 //in frontend name should be file
+// name file
 router.post("/create", requireSignIn, upload.single("file"), createProduct);
 router.get("/", getProducts);
 
