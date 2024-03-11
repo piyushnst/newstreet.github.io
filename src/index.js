@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
-const adminRoutes = require("./routes/admin.routes");
 const requireSignIn = require("./middlewares/auth.middleware");
+const adminRoutes = require("./routes/admin.routes");
+const productRoutes = require("./routes/products.routes");
+
 //database connection
 connectDB();
 
@@ -14,11 +16,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//route
+//routes
 
-app.use("/admin/api/v1", adminRoutes);
+app.use("/api/v1", adminRoutes);
+app.use("/api/v1/products", productRoutes);
 
-//check protected route
+//check protected route  test
 app.get("/protected-route", requireSignIn, (req, res) => {
   try {
     res.status(200).json({
