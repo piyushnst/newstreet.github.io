@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createNews , getNews} = require("../controllers/news.controller");
+const { createNews , getNews, getNewsById} = require("../controllers/news.controller");
 const multer = require("multer");
 const requireSignIn = require("../middlewares/auth.middleware");
 
@@ -27,6 +27,7 @@ const upload = multer({ storage: storage });
 
 router.post("/create", requireSignIn, upload.single("file"), createNews);
 router.get("/", getNews);
+router.get('/:id', getNewsById);
 
 
 module.exports = router;
