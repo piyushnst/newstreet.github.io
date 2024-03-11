@@ -43,5 +43,21 @@ const getNews = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch news" });
   }
 };
+const getNewsById = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const newsItem = await News.findOne({ id })
 
-module.exports = { createNews, getNews };
+    if (!newsItem) {
+      return res.status(404).json({ message: "News item not found" });
+    }
+
+    res.status(200).json(newsItem);
+  } catch (error) {
+    console.error("Error fetching news by ID:", error);
+    res.status(500).json({ message: "Failed to fetch news by ID" });
+  }
+};
+
+
+module.exports = { createNews, getNews, getNewsById };
