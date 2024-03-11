@@ -1,8 +1,10 @@
 const Admin = require("../models/admin.model");
-const bcrypt = require("bcrypt");
-const hashPassword = require("../utils/hashPassword");
+const jwt = require("jsonwebtoken");
+const { comparePasswords, hashPassword } = require("../utils/passwordUtils");
 
-const createAdmin = async (req, res) => {
+const JWT_SECRET = "Usmaan123";
+//CONTROLLERS
+const registerAdmin = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -48,6 +50,47 @@ const createAdmin = async (req, res) => {
 
 const loginAdmin = async (req, res) => {
   try {
+    const { username, password } = req.body;
+
+    //find amdin by username
+    const admin = await Admin.findOne({
+      username: username,
+    });
+
+    if (!admin) {
+      return res.status(404).json({
+        message: "Admin not found!",
+      });
+    }
+
+    //comparing password with hashed password in DB
+    const isMatch = await comparePasswords(password, admin.password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "Invalid credentials",
+      });
+    }
+
+    //generate JWT
+    const token = jwt.sign(
+      {
+        id: admin._id,
+        username: admin.username,
+      },
+      JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.status(200).json({
+      message: "Login successful",
+      data: {
+        id: admin._id,
+        username: admin.username,
+        email: admin.email,
+      },
+      token,
+    });
   } catch (error) {
     console.error("Cannot login admin", error.message);
     res.status(500).json({
@@ -56,4 +99,4 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-module.exports = createAdmin;
+module.exports = { registerAdmin, loginAdmin };
