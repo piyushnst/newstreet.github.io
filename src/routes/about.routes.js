@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createAbout , getAbout} = require("../controllers/about.controller");
+const { createAbout , getAbout, updateAbout, deleteAbout} = require("../controllers/about.controller");
 const multer = require("multer");
 const requireSignIn = require("../middlewares/auth.middleware");
 
@@ -27,6 +27,9 @@ const upload = multer({ storage: storage });
 
 router.post("/create", requireSignIn, upload.single("file"), createAbout);
 router.get("/", getAbout);
+
+router.put("/:id", requireSignIn, upload.single("file"), updateAbout);
+router.delete("/:id", requireSignIn, deleteAbout);
 
 
 module.exports = router;
