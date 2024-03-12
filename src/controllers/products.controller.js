@@ -37,10 +37,25 @@ const createProduct = async (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find({}); // Fetch all products
+    if (products.length === 0) {
+      res.status(200).json({
+        message: "No product found!",
+      });
+    }
     res.status(200).json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({ message: "Failed to fetch products" });
+  }
+};
+
+const getProductById = async (req, res) => {
+  try {
+  } catch (error) {
+    console.error(`Error in getting product ${error.message}`);
+    res.status(500).send({
+      message: `Error in getting product ${error.message}`,
+    });
   }
 };
 
@@ -113,4 +128,10 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, getProducts, updateProduct, deleteProduct };
+module.exports = {
+  createProduct,
+  getProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+};

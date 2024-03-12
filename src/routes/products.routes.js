@@ -5,6 +5,7 @@ const {
   getProducts,
   updateProduct,
   deleteProduct,
+  getProductById,
 } = require("../controllers/products.controller");
 const multer = require("multer");
 const requireSignIn = require("../middlewares/auth.middleware");
@@ -15,7 +16,7 @@ const storage = multer.diskStorage({
     cb(null, "../uploads/products");
   },
   filename: function (req, file, cb) {
-    let appTitle = req.body.title || "DefaultAppTitle";
+    let appTitle = req.body.title || "DefaultProductTitle";
     appTitle = appTitle.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase(); // Sanitize the title
 
     // Determine the part of the title to use based on its length
@@ -34,6 +35,7 @@ const upload = multer({ storage: storage });
 // name file
 router.post("/create", requireSignIn, upload.single("file"), createProduct);
 router.get("/", getProducts);
+router.get("/:id", getProductById);
 // Assuming `upload` is your multer instance configured for handling file uploads
 router.put("/:id", requireSignIn, upload.single("file"), updateProduct);
 router.delete("/:id", requireSignIn, deleteProduct);
