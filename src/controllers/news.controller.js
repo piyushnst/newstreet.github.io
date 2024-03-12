@@ -8,13 +8,12 @@ const createNews = async (req, res) => {
         message: "Image file is required",
       });
     }
-    
-    const { id, title, description } = req.body;
+
+    const { title, description } = req.body;
     const imageUrl = req.file.path;
 
     //create a new product instance
     const newNews = new News({
-      id,
       title,
       description,
       imageUrl,
@@ -34,19 +33,27 @@ const createNews = async (req, res) => {
     });
   }
 };
+
 const getNews = async (req, res) => {
   try {
     const news = await News.find({}); // Fetch all news
+    if (news.length === 0) {
+      return res.status(200).json({
+        message: "No news found!",
+      });
+    }
     res.status(200).json(news);
   } catch (error) {
     console.error("Error fetching news:", error);
     res.status(500).json({ message: "Failed to fetch news" });
   }
 };
+
 const getNewsById = async (req, res) => {
   try {
-    const { id } = req.params; 
-    const newsItem = await News.findOne({ id })
+    const { id } = req.params;
+    console.log(id);
+    const newsItem = await News.findOne({ _id: id });
 
     if (!newsItem) {
       return res.status(404).json({ message: "News item not found" });
@@ -58,6 +65,5 @@ const getNewsById = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch news by ID" });
   }
 };
-
 
 module.exports = { createNews, getNews, getNewsById };
