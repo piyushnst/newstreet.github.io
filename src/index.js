@@ -5,6 +5,7 @@ const requireSignIn = require("./middlewares/auth.middleware");
 const adminRoutes = require("./routes/admin.routes");
 const productRoutes = require("./routes/products.routes");
 const newsRoutes = require("./routes/news.routes");
+const aboutRoutes = require("./routes/about.routes");
 require("dotenv").config();
 
 //database connection
@@ -25,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1", adminRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/news", newsRoutes);
+app.use("/api/v1/about", aboutRoutes);
 
 //check protected route  test
 app.get("/protected-route", requireSignIn, (req, res) => {
